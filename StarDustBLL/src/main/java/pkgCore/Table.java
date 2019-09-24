@@ -55,7 +55,8 @@ public class Table {
 	 */
 	public void SetTablePlayers(ArrayList<Player> Players)
 	{
-		//FIXME: clear the table and add all the players.
+		TablePlayers.clear();
+		TablePlayers = Players;
 	}
 	
 	/**
@@ -68,7 +69,8 @@ public class Table {
 	 */
 	public void AddPlayerToTable(Player player)
 	{
-		//FIXME: Add a player to the table
+		TablePlayers.add(player);
+		
 	}
 	
 	/**
@@ -81,7 +83,7 @@ public class Table {
 	 */
 	public void RemovePlayerFromTable(Player p)
 	{
-		//FIXME: Remove a player from the table
+		TablePlayers.remove(p);
 	}
 	
 	/**
@@ -94,8 +96,7 @@ public class Table {
 	 */
 	public ArrayList<Player> getTablePlayers()
 	{
-		//FIXME: This should return the TablePlayers (don't return null).
-		return null;
+		return this.TablePlayers ;
 	}
 
 }
