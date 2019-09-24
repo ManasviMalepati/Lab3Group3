@@ -20,14 +20,11 @@ public class Player {
 	}
 
 	public String getPlayerName() {
-		Scanner getName = new Scanner(System.in);
-		System.out.println("Enter name: ");
-		String playerName = getName.nextLine();
-		return playerName;
+		return this.PlayerName;
 	}
 
 	public void setPlayerName(String playerName) {
-		//FIXME: Set the player name
+		PlayerName = playerName;
 	}
 
 	public UUID getPlayerID() {
