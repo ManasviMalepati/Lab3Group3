@@ -55,7 +55,6 @@ public class Table {
 	 */
 	public void SetTablePlayers(ArrayList<Player> Players)
 	{
-		TablePlayers.clear();
 		TablePlayers = Players;
 	}
 	

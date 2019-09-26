@@ -249,8 +249,38 @@ public class HandPoker extends Hand implements Comparable {
 		ArrayList<HandPoker> CombinationHands = new ArrayList<HandPoker>();
 		Rule rle = this.getGP().getRle();
 		
+		for (int i = 0; i< ((rle.getPlayerCardsMax()-rle.getPlayerCardsMin()) +1); i++) {
+			Iterator<int[]> cardCombos = CombinatoricsUtils.combinationsIterator(rle.GetCommunityCardsCount(), rle.GetCommunityCardsCount() - i);
+			
+			ArrayList<HandPoker> playerHandCombo = new ArrayList<HandPoker>();
+			ArrayList<HandPoker> communityHandCombo = new ArrayList<HandPoker>();
+			
+			while (cardCombos.hasNext()) {
+				int [] card = combos.next();
+				handCombo = ArrayList<HandPoker> handCombo = new ArrayList<HandPoker>();
+				for (int j:card) {
+					handCombo  += 
+				}
+				
+				
+			}
+			
+		}
+		
 		//FIXME: Complete this method.  It's a tough one!
-
+		/* 
+		 * 
+		 * for each in hand
+		 * for rest in hand
+		 * 
+		 * for each in common
+		 * 
+		 * while (CombinationHands.hasNext()){
+		 * 	int[] card = CombinationHands.next()
+		 * 	
+		 * 	
+		 */ 
+	
 		return CombinationHands;
 	}
 
