@@ -15,4 +15,5 @@ public enum eRank {
 		return iRankNbr;
 	}
 
+
 }

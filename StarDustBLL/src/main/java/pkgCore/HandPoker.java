@@ -244,45 +244,48 @@ public class HandPoker extends Hand implements Comparable {
 	 * @return
 	 * @throws HandException
 	 */
+	
 	public ArrayList<HandPoker> GetPossibleHands() throws HandException {
 
 		ArrayList<HandPoker> CombinationHands = new ArrayList<HandPoker>();
 		Rule rle = this.getGP().getRle();
 		
-		for (int i = 0; i< ((rle.getPlayerCardsMax()-rle.getPlayerCardsMin()) +1); i++) {
-			Iterator<int[]> cardCombos = CombinatoricsUtils.combinationsIterator(rle.GetCommunityCardsCount(), rle.GetCommunityCardsCount() - i);
+		for (int i = 0; i < ((rle.getPlayerCardsMax()-rle.getPlayerCardsMin()) +1); i++) {
 			
-			ArrayList<HandPoker> playerHandCombo = new ArrayList<HandPoker>();
-			ArrayList<HandPoker> communityHandCombo = new ArrayList<HandPoker>();
 			
-			while (cardCombos.hasNext()) {
-				int [] card = combos.next();
-				handCombo = ArrayList<HandPoker> handCombo = new ArrayList<HandPoker>();
-				for (int j:card) {
-					handCombo  += 
+			Iterator<int[]> playerIntCardCombs = CombinatoricsUtils.combinationsIterator(rle.getPlayerCardsMax(),rle.getPlayerCardsMin() + i);
+			
+			while (playerIntCardCombs.hasNext()) {
+				final int [] playerCardCombo = playerIntCardCombs.next();
+				
+				Iterator<int[]> communityIntCardCombs = CombinatoricsUtils.combinationsIterator(rle.getCommunityCardsMax(), rle.getCommunityCardsMax() - i);
+				
+				while (communityIntCardCombs.hasNext()) {
+					
+					ArrayList<Card> allCards = new ArrayList<Card>();
+					final int [] communityCardCombo = communityIntCardCombs.next();
+				
+					for(int playerCard : playerCardCombo) {
+						allCards.add(this.getCards().get(playerCard));
+					}
+					for(int communityCard : communityCardCombo) {
+						allCards.add(this.getGP().getCommonCards().get(communityCard));
+					}
+					
+					HandPoker newPoker = new HandPoker(this.getPlayer(),this.getGP(),allCards);
+					CombinationHands.add(newPoker);
 				}
-				
-				
-			}
-			
+				}
+		}
+		if (this.getGP().getRle().getPossibleHandCombinations()!=CombinationHands.size()) {
+			throw new HandException(this);
 		}
 		
-		//FIXME: Complete this method.  It's a tough one!
-		/* 
-		 * 
-		 * for each in hand
-		 * for rest in hand
-		 * 
-		 * for each in common
-		 * 
-		 * while (CombinationHands.hasNext()){
-		 * 	int[] card = CombinationHands.next()
-		 * 	
-		 * 	
-		 */ 
-	
 		return CombinationHands;
 	}
+	
+	
+
 
 	/**
 	 * @author BRG

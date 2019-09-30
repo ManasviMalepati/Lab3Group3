@@ -112,6 +112,65 @@ public class HandCombinationTest {
 		}
 
 	}
+	
+	@Test
+	public void Omaha_Test1() {
+
+		ArrayList<HandPoker> lstHandPoker = new ArrayList<HandPoker>();
+		Table t = new Table("my table");
+		Player p1 = new Player("Bert");
+		t.AddPlayerToTable(p1);
+		Rule rle = new Rule(eGame.Omaha);
+		GamePlay gp = new GamePlay(t, rle);
+
+		ArrayList<Card> CommonCards = new ArrayList<Card>();
+		CommonCards.add(new Card(eSuit.DIAMONDS, eRank.SIX));
+		CommonCards.add(new Card(eSuit.DIAMONDS, eRank.FOUR));
+		CommonCards.add(new Card(eSuit.DIAMONDS, eRank.FIVE));
+		CommonCards.add(new Card(eSuit.DIAMONDS, eRank.TEN));
+		CommonCards.add(new Card(eSuit.SPADES, eRank.KING));
+
+		gp = this.SetCommonCards(CommonCards, gp);
+
+
+		HandPoker HP = new HandPoker(p1, gp);
+		
+		Card c1 = new Card(eSuit.CLUBS, eRank.TWO);
+		Card c2 = new Card(eSuit.CLUBS, eRank.THREE);
+		Card c3 = new Card(eSuit.SPADES, eRank.ACE);
+		Card c4 = new Card(eSuit.HEARTS, eRank.QUEEN);
+
+		HP.AddCard(c1);
+		HP.AddCard(c2);
+		HP.AddCard(c3);
+		HP.AddCard(c4);
+		
+
+		try {
+			lstHandPoker = HP.EvaluateHand();
+		} catch (HandException e) {
+			fail("Evaluation failed");
+		}
+		assertEquals(60, lstHandPoker.size());
+
+		assertEquals(eHandStrength.Straight, lstHandPoker.get(0).getHandScorePoker().geteHandStrength());
+
+		for (HandPoker hp : lstHandPoker) {
+			System.out.print(hp.getHandScorePoker().geteHandStrength() + " ");
+			System.out.print(hp.getHandScorePoker().getHiCard().geteSuit() + " "
+					+ hp.getHandScorePoker().getHiCard().geteRank() + " ");
+			if (hp.getHandScorePoker().getLoCard() != null) {
+
+				System.out.print(hp.getHandScorePoker().getLoCard().geteSuit() + " "
+						+ hp.getHandScorePoker().getLoCard().geteRank() + " ");
+			}
+			for (Card c : hp.getCards()) {
+				System.out.print(c.geteSuit() + " " + c.geteRank() + " ");
+			}
+			System.out.println(" ");
+		}
+
+	}	
 
 	private GamePlay SetCommonCards(ArrayList<Card> setCards, GamePlay gp) {
 		Object oGamePlay = null;
