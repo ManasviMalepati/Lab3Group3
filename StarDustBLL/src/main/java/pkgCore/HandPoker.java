@@ -245,46 +245,68 @@ public class HandPoker extends Hand implements Comparable {
 	 * @throws HandException
 	 */
 	
+	
 	public ArrayList<HandPoker> GetPossibleHands() throws HandException {
 
 		ArrayList<HandPoker> CombinationHands = new ArrayList<HandPoker>();
 		Rule rle = this.getGP().getRle();
-		
+
 		for (int i = 0; i < ((rle.getPlayerCardsMax()-rle.getPlayerCardsMin()) +1); i++) {
-			
-			
-			Iterator<int[]> playerIntCardCombs = CombinatoricsUtils.combinationsIterator(rle.getPlayerCardsMax(),rle.getPlayerCardsMin() + i);
-			
+
+
+			Iterator<int[]> playerIntCardCombs = CombinatoricsUtils.combinationsIterator(rle.GetPlayerNumberOfCards(),rle.getPlayerCardsMin() + i);
+
 			while (playerIntCardCombs.hasNext()) {
 				final int [] playerCardCombo = playerIntCardCombs.next();
-				
-				Iterator<int[]> communityIntCardCombs = CombinatoricsUtils.combinationsIterator(rle.getCommunityCardsMax(), rle.getCommunityCardsMax() - i);
-				
-				while (communityIntCardCombs.hasNext()) {
-					
-					ArrayList<Card> allCards = new ArrayList<Card>();
-					final int [] communityCardCombo = communityIntCardCombs.next();
-				
+
+				if(rle.getCommunityCardsMax()==0) {
+
+					//case for a game like 5 card stud where there is no community card
+
+
 					for(int playerCard : playerCardCombo) {
+						ArrayList<Card> allCards = new ArrayList<Card>();
 						allCards.add(this.getCards().get(playerCard));
 					}
-					for(int communityCard : communityCardCombo) {
-						allCards.add(this.getGP().getCommonCards().get(communityCard));
-					}
-					
-					HandPoker newPoker = new HandPoker(this.getPlayer(),this.getGP(),allCards);
+					HandPoker newPoker = new HandPoker(this.getPlayer(),this.getGP(),getCards());
 					CombinationHands.add(newPoker);
+
+
 				}
+
+
+				else {
+
+					Iterator<int[]> communityIntCardCombs = CombinatoricsUtils.combinationsIterator(rle.getCommunityCardsMax(), rle.getCommunityCardsMax() -rle.getPlayerCardsMin()- i);
+
+
+					while (communityIntCardCombs.hasNext()) {
+
+						ArrayList<Card> allCards = new ArrayList<Card>();
+						final int [] communityCardCombo = communityIntCardCombs.next();
+
+						for(int playerCard : playerCardCombo) {
+							allCards.add(this.getCards().get(playerCard));
+						}
+						for(int communityCard : communityCardCombo) {
+							allCards.add(this.getGP().getCommonCards().get(communityCard));
+						}
+
+						HandPoker newPoker = new HandPoker(this.getPlayer(),this.getGP(),allCards);
+						CombinationHands.add(newPoker);
+					}
 				}
+			}
+
 		}
+
+
 		if (this.getGP().getRle().getPossibleHandCombinations()!=CombinationHands.size()) {
 			throw new HandException(this);
 		}
-		
+
 		return CombinationHands;
 	}
-	
-	
 
 
 	/**
